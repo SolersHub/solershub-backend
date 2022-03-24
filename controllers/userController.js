@@ -30,7 +30,7 @@ exports.deleteMe = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.uploadImage = factoryController.uploadImage(User, "user");
+exports.uploadImage = factoryController.uploadBackdrop(User, "user");
 
 exports.updateOneUser = catchAsync(async (req, res, next) => {
   const { name } = req.body;

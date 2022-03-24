@@ -39,7 +39,7 @@ exports.deleteMe = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.uploadImage = factoryController.uploadImage(Instructor, "instructor");
+exports.uploadImage = factoryController.uploadBackdrop(Instructor, "instructor");
 
 exports.updateOneInstructor = catchAsync(async (req, res, next) => {
   const { name, description } = req.body;

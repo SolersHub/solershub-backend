@@ -184,7 +184,7 @@ exports.courseMiddleware = catchAsync(async (req, res, next) => {
   next();
 });
 
-exports.addCourseBackground = factoryController.uploadImage(Course, "course");
+exports.addCourseBackground = factoryController.uploadBackdrop(Course, "course");
 
 exports.addCourseSection = catchAsync(async (req, res, next) => {
   const { name, index } = req.body;
@@ -229,7 +229,7 @@ exports.addCourseSection = catchAsync(async (req, res, next) => {
     sectionsForCourse.map(async (section) => {
       newInd = section.index + 1;
       section.index = newInd;
-      await Section.findByIdAndUpdate(section, section);
+      await Section.findByIdAndUpdate(section.id, section);
     })
   );
 

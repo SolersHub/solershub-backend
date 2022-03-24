@@ -2,7 +2,6 @@ const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 const multer = require("multer");
 const path = require("path");
-const sharp = require("sharp");
 
 const makeImageStorage = (participant, type) => {
   const imageStorage = multer.diskStorage({
@@ -23,9 +22,7 @@ exports.getAll = (Model, doc, course, name) =>
     const { limit, page } = req.query;
     const skip = (page - 1) * limit;
     if (course) {
-      doc = await Model.find()
-        .skip(skip)
-        .limit(limit);
+      doc = await Model.find().skip(skip).limit(limit);
     } else {
       doc = await Model.find().skip(skip).limit(limit);
     }
@@ -160,5 +157,28 @@ exports.uploadImage = (Model, type) =>
         status: "success",
         message: "Image successfully saved",
       });
+    });
+  });
+
+exports.uploadBackdrop = (Model, type) =>
+  catchAsync(async (req, res, next) => {
+    const { imageURL } = req.body;
+    let participant;
+
+    if (type === "user") {
+      participant = req.user;
+    } else if (type === "instructor") {
+      participant = req.instructor;
+    } else {
+      participant = req.course;
+    }
+
+    await Model.findByIdAndUpdate(participant.id, {
+      image: imageURL,
+    });
+
+    res.status(201).json({
+      status: "success",
+      message: "Image successfully saved",
     });
   });
